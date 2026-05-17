@@ -80,7 +80,6 @@ uvicorn app:app --reload
 > // To this:
 > const API_BASE_URL = 'http://localhost:8000/api';
 > ```
-> Remember to revert this before pushing back to GitHub.
 
 Open `index.html` with the **Live Server** extension in VS Code (or any local HTTP server).
 
