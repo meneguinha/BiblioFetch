@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BiblioFetch | Reference Extraction & Validation</title>
+    <title>BiblioFetch | Reference Extraction &amp; Validation</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,6 +17,13 @@
 </head>
 <body>
 
+    <!-- Language Toggle -->
+    <div class="lang-toggle" id="langToggle">
+        <button class="lang-btn active" data-lang="en">EN</button>
+        <span class="lang-divider">|</span>
+        <button class="lang-btn" data-lang="pt">PT</button>
+    </div>
+
     <div class="background-blobs">
         <div class="blob blob-1"></div>
         <div class="blob blob-2"></div>
@@ -28,36 +35,36 @@
                 <i class="ph ph-books"></i>
                 <h1>BiblioFetch</h1>
             </div>
-            <p class="subtitle">Intelligent extraction and enrichment of bibliographic data.</p>
+            <p class="subtitle" data-i18n="subtitle">Intelligent extraction and enrichment of bibliographic data.</p>
         </header>
 
         <section class="input-section glass-panel">
-            <label for="userText">Paste your raw bibliographic references below:</label>
-            <textarea id="userText" placeholder="Ex: Arthurs, J., Drakopoulou, S., & Gandini, A. (2018). Researching YouTube. Convergence..."></textarea>
+            <label for="userText" data-i18n="label_paste">Paste your raw bibliographic references below:</label>
+            <textarea id="userText" data-i18n-placeholder="textarea_placeholder" placeholder="Ex: Arthurs, J., Drakopoulou, S., &amp; Gandini, A. (2018). Researching YouTube. Convergence..."></textarea>
 
             <div class="api-key-config-group">
-                <label><i class="ph ph-key"></i> API Key Configuration (Gemini):</label>
+                <label data-i18n-html="api_key_label"><i class="ph ph-key"></i> API Key Configuration (Gemini):</label>
                 <div class="api-key-options">
                     <label class="radio-option">
                         <input type="radio" name="api_key_type" value="default" checked>
                         <span class="radio-custom"></span>
-                        <span class="radio-label">Use server key (Free &amp; Default)</span>
+                        <span class="radio-label" data-i18n="radio_server">Use server key (Free &amp; Default)</span>
                     </label>
                     <label class="radio-option">
                         <input type="radio" name="api_key_type" value="custom">
                         <span class="radio-custom"></span>
-                        <span class="radio-label">Use my own key (Free on Google AI Studio)</span>
+                        <span class="radio-label" data-i18n="radio_custom">Use my own key (Free on Google AI Studio)</span>
                     </label>
                 </div>
 
                 <div id="customApiKeyContainer" class="custom-key-container hidden">
                     <div class="input-password-wrapper">
-                        <input type="password" id="customApiKey" placeholder="Paste your Google AI Studio API Key here...">
+                        <input type="password" id="customApiKey" data-i18n-placeholder="api_key_placeholder" placeholder="Paste your Google AI Studio API Key here...">
                         <i class="ph ph-eye-closed toggle-password-visibility" id="togglePassword"></i>
                     </div>
                     <p class="api-key-help-text">
-                        Your key is saved locally and securely in your browser. It is never stored on our servers.
-                        <a href="tutorial.html" target="_blank" class="help-link">
+                        <span data-i18n="api_key_help">Your key is saved locally and securely in your browser. It is never stored on our servers.</span>
+                        <a href="tutorial.html" target="_blank" class="help-link" data-i18n-html="tutorial_link">
                             <i class="ph ph-book-open"></i> How to create my free API Key? (Step-by-step Tutorial)
                         </a>
                     </p>
@@ -65,7 +72,7 @@
             </div>
 
             <div class="model-selection-group">
-                <label for="modelSelection"><i class="ph ph-cpu"></i> Choose the AI model:</label>
+                <label for="modelSelection" data-i18n-html="model_label"><i class="ph ph-cpu"></i> Choose the AI model:</label>
                 <div class="custom-select-wrapper">
                     <select id="modelSelection">
                         <option value="Gemini 2.5 Flash">Gemini 2.5 Flash</option>
@@ -80,7 +87,7 @@
             </div>
 
             <button id="btnProcess" class="primary-button">
-                <span>Process References</span>
+                <span data-i18n="btn_process">Process References</span>
                 <i class="ph ph-arrow-right"></i>
             </button>
         </section>
@@ -90,8 +97,8 @@
             <div class="progress-step" id="step-extract">
                 <div class="status-icon"><i class="ph ph-circle"></i></div>
                 <div class="step-content" style="width: 100%;">
-                    <h3>1. AI Extraction</h3>
-                    <p>The model is analysing and structuring the text (may take a few seconds).</p>
+                    <h3 data-i18n="step1_title">1. AI Extraction</h3>
+                    <p data-i18n="step1_desc">The model is analysing and structuring the text (may take a few seconds).</p>
                     <div class="progress-bar-container">
                         <div class="progress-bar" id="bar-extract"></div>
                     </div>
@@ -101,8 +108,8 @@
             <div class="progress-step" id="step-enrich">
                 <div class="status-icon"><i class="ph ph-circle"></i></div>
                 <div class="step-content" style="width: 100%;">
-                    <h3>2. Searching <a href="https://openalex.org/" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline; text-decoration-color: var(--primary-color);">OpenAlex</a></h3>
-                    <p>Verifying unique identifiers and retrieving files from global research repositories.</p>
+                    <h3 data-i18n-html="step2_title">2. Searching <a href="https://openalex.org/" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline; text-decoration-color: var(--primary-color);">OpenAlex</a></h3>
+                    <p data-i18n="step2_desc">Verifying unique identifiers and retrieving files from global research repositories.</p>
                     <div class="progress-bar-container">
                         <div class="progress-bar" id="bar-enrich"></div>
                     </div>
@@ -112,8 +119,8 @@
             <div class="progress-step" id="step-validate">
                 <div class="status-icon"><i class="ph ph-circle"></i></div>
                 <div class="step-content" style="width: 100%;">
-                    <h3>3. Link Access Test</h3>
-                    <p>Testing PDF accessibility and categorising results.</p>
+                    <h3 data-i18n="step3_title">3. Link Access Test</h3>
+                    <p data-i18n="step3_desc">Testing PDF accessibility and categorising results.</p>
                     <div class="progress-bar-container">
                         <div class="progress-bar" id="bar-validate"></div>
                     </div>
@@ -123,8 +130,8 @@
 
         <!-- Final Audit Panel -->
         <section id="resultsSection" class="results-section hidden">
-            <h2 class="results-title" style="margin-bottom: 4px;"><i class="ph ph-chart-bar"></i> Final Audit Panel</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 24px; font-size: 0.95rem;">💡 Tip: Press <strong>Ctrl + Click</strong> (or use the middle mouse button) on the buttons to open tabs in the background without leaving this page.</p>
+            <h2 class="results-title" style="margin-bottom: 4px;" data-i18n-html="results_title"><i class="ph ph-chart-bar"></i> Final Audit Panel</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 24px; font-size: 0.95rem;" data-i18n-html="results_tip">💡 Tip: Press <strong>Ctrl + Click</strong> (or use the middle mouse button) on the buttons to open tabs in the background without leaving this page.</p>
 
             <div class="results-grid">
                 <!-- Success -->
@@ -132,13 +139,11 @@
                     <div class="card-header" style="flex-wrap: wrap;">
                         <div style="display: flex; align-items: center; gap: 12px; width: 100%;">
                             <i class="ph ph-check-circle"></i>
-                            <h3>Available for Download</h3>
+                            <h3 data-i18n="card_success">Available for Download</h3>
                             <span class="badge badge-success" id="countSuccess">0</span>
                         </div>
                     </div>
-                    <div class="card-body" id="listSuccess">
-                        <!-- Items rendered here via JS -->
-                    </div>
+                    <div class="card-body" id="listSuccess"></div>
                 </div>
 
                 <!-- Paywall -->
@@ -146,31 +151,28 @@
                     <div class="card-header" style="flex-wrap: wrap;">
                         <div style="display: flex; align-items: center; gap: 12px; width: 100%;">
                             <i class="ph ph-lock-key"></i>
-                            <h3>Possible paywall</h3>
+                            <h3 data-i18n="card_paywall">Possible paywall</h3>
                             <span class="badge badge-warning" id="countPaywall">0</span>
                         </div>
                     </div>
-                    <div class="card-body" id="listPaywall">
-                        <!-- Items rendered here via JS -->
-                    </div>
+                    <div class="card-body" id="listPaywall"></div>
                 </div>
 
                 <!-- No DOI -->
                 <div class="result-card info-card glass-panel">
                     <div class="card-header">
                         <i class="ph ph-warning-circle"></i>
-                        <h3>No DOI Identified</h3>
+                        <h3 data-i18n="card_nodoi">No DOI Identified</h3>
                         <span class="badge badge-info" id="countNoDoi">0</span>
                     </div>
-                    <div class="card-body" id="listNoDoi">
-                        <!-- Items rendered here via JS -->
-                    </div>
+                    <div class="card-body" id="listNoDoi"></div>
                 </div>
             </div>
         </section>
 
     </main>
 
+    <script src="lang.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

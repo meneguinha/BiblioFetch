@@ -1,5 +1,5 @@
 // API configuration (change to Hugging Face URL in production)
-const API_BASE_URL = 'https://fmenegottobr-bibliofetch.hf.space/api';
+const API_BASE_URL = 'http://localhost:8000/api';
 // Example for prod: const API_BASE_URL = 'https://your-name-your-space.hf.space/api';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -58,14 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
     btnProcess.addEventListener('click', async () => {
         const text = userText.value.trim();
         if (!text) {
-            alert('Please paste your references into the text field.');
+            alert(t('alert_empty'));
             return;
         }
 
         // Validate the 200-line limit
         const lineCount = text.split('\n').length;
         if (lineCount > 200) {
-            alert(`Your text has ${lineCount} lines. The maximum allowed is 200 lines.\n\nTip: paste only the references section of your document.`);
+            alert(t('alert_line_limit', lineCount));
             return;
         }
 
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (selectedRadio && selectedRadio.value === 'custom') {
             const userKey = customApiKeyInput.value.trim();
             if (!userKey) {
-                alert('Please enter your Gemini API key or select "Use server key".');
+                alert(t('alert_no_key'));
                 return;
             }
             apiKeyToSend = userKey;
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Reset interface
         resetUI();
         btnProcess.disabled = true;
-        btnProcess.innerHTML = `<i class="ph ph-spinner"></i> Processing...`;
+        btnProcess.innerHTML = `<i class="ph ph-spinner"></i> ${t('btn_processing')}`;
         progressSection.classList.remove('hidden');
 
         let extractInterval;
@@ -232,11 +232,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (enrichInterval) clearInterval(enrichInterval);
             if (validateInterval) clearInterval(validateInterval);
             console.error(error);
-            alert(`An error occurred: ${error.message}`);
+            alert(t('alert_error', error.message));
         } finally {
             // Restore button
             btnProcess.disabled = false;
-            btnProcess.innerHTML = `<span>Process References</span> <i class="ph ph-arrow-right"></i>`;
+            btnProcess.innerHTML = `<span>${t('btn_process_restore')}</span> <i class="ph ph-arrow-right"></i>`;
         }
     });
 
@@ -288,12 +288,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="list-item-title">${item.title}</div>
                     <div class="list-item-meta">DOI: ${item.doi}</div>
                     <a href="${item.pdf_url}" target="_blank" class="action-link">
-                        <i class="ph ph-download-simple"></i> Open PDF
+                        <i class="ph ph-download-simple"></i> ${t('open_pdf')}
                     </a>
                 </div>
             `;
         });
-        if (data.success.length === 0) successList.innerHTML = '<div class="list-item">No accessible PDFs found.</div>';
+        if (data.success.length === 0) successList.innerHTML = `<div class="list-item">${t('no_pdfs')}</div>`;
 
         // Render Paywall
         const paywallList = document.getElementById('listPaywall');
@@ -303,11 +303,11 @@ document.addEventListener('DOMContentLoaded', () => {
             paywallList.innerHTML += `
                 <div class="list-item">
                     <div class="list-item-title">${item.title}</div>
-                    ${item.doi ? `<a href="${item.doi}" target="_blank" class="action-link" style="margin-top: 8px;"><i class="ph ph-arrow-square-out"></i> Try manually</a>` : ''}
+                    ${item.doi ? `<a href="${item.doi}" target="_blank" class="action-link" style="margin-top: 8px;"><i class="ph ph-arrow-square-out"></i> ${t('try_manually')}</a>` : ''}
                 </div>
             `;
         });
-        if (data.paywall_blocked.length === 0) paywallList.innerHTML = '<div class="list-item">No blocks recorded.</div>';
+        if (data.paywall_blocked.length === 0) paywallList.innerHTML = `<div class="list-item">${t('no_blocks')}</div>`;
 
         // Render No DOI
         const noDoiList = document.getElementById('listNoDoi');
@@ -320,12 +320,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="list-item-title">${item.title}</div>
                     <div class="list-item-meta">Journal: ${item.journal || 'Not provided'}</div>
                     <a href="${searchUrl}" target="_blank" class="action-link" style="margin-top: 8px;">
-                        <i class="ph ph-google-logo"></i> Search on Google
+                        <i class="ph ph-google-logo"></i> ${t('search_google')}
                     </a>
                 </div>
             `;
         });
-        if (data.no_doi.length === 0) noDoiList.innerHTML = '<div class="list-item">All references had a DOI.</div>';
+        if (data.no_doi.length === 0) noDoiList.innerHTML = `<div class="list-item">${t('all_had_doi')}</div>`;
     }
 
     // Intercept link clicks to keep focus on the current tab

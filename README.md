@@ -20,14 +20,16 @@
 ## Architecture
 
 ```
-GitHub Pages (Frontend)          Hugging Face Spaces (Backend)
-┌─────────────────────┐          ┌──────────────────────────────┐
-│  index.html         │  HTTPS   │  FastAPI (app.py)            │
-│  script.js    ──────┼─────────▶│  /api/extract  (Gemini)      │
-│  style.css          │          │  /api/enrich   (OpenAlex)    │
-└─────────────────────┘          │  /api/validate (curl_cffi)   │
-                                 │  /api/proxy_pdf              │
-                                 └──────────────────────────────┘
+GitHub Pages (Frontend)               Hugging Face Spaces (Backend)
+┌───────────────────────────┐         ┌──────────────────────────────────────┐
+│  meneguinha.github.io/    │  HTTPS  │  fmenegottobr-bibliofetch.hf.space   │
+│  BiblioFetch              │         │                                      │
+│  ├─ index.html            │         │  FastAPI (app.py)                    │
+│  ├─ script.js    ─────────┼────────▶│  /api/extract  (Gemini)              │
+│  └─ style.css             │         │  /api/enrich   (OpenAlex)            │
+└───────────────────────────┘         │  /api/validate (curl_cffi)           │
+                                      │  /api/proxy_pdf                      │
+                                      └──────────────────────────────────────┘
 ```
 
 The frontend is a static site hosted on GitHub Pages. The backend runs as a FastAPI app inside a Docker container on Hugging Face Spaces and holds the Gemini API key securely as an environment secret — it never appears in the frontend code.
@@ -82,7 +84,10 @@ Open `index.html` with the **Live Server** extension in VS Code (or any local HT
 | Backend  | Hugging Face Spaces   | Docker SDK — see `Dockerfile`                      |
 | API Key  | HF Space Secrets      | Set `GEMINI_API_KEY` in Space Settings → Secrets   |
 
-> Before pushing to GitHub, update `API_BASE_URL` in `script.js` to point to your HF Space URL.
+> Before pushing to GitHub, update `API_BASE_URL` in `script.js`:
+> ```js
+> const API_BASE_URL = 'https://fmenegottobr-bibliofetch.hf.space/api';
+> ```
 
 ---
 
