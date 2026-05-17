@@ -1,6 +1,6 @@
-// API configuration (change to Localhost if running locally)
-const API_BASE_URL = 'https://fmenegottobr-bibliofetch.hf.space/api;
-// Example for prod: const API_BASE_URL = 'https://your-name-your-space.hf.space/api';
+// API configuration (change to Hugging Face URL in production)
+const API_BASE_URL = 'https://fmenegottobr-bibliofetch.hf.space/api';
+// To run locally: const API_BASE_URL = 'http://localhost:8000/api';
 
 document.addEventListener('DOMContentLoaded', () => {
     const btnProcess = document.getElementById('btnProcess');
