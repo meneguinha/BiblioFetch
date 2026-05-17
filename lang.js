@@ -67,7 +67,7 @@ const TRANSLATIONS = {
         faq2_a:     "Completely. Your key is stored <strong>100% securely and privately in your own browser\'s local storage (localStorage)</strong>. It is never saved on our server and is transmitted directly and in encrypted form only when you request a reference extraction.",
         faq3_q:     '<i class="ph ph-arrows-left-right"></i> What is the difference between the server key and my own key?',
         faq3_a:     "The server key is shared among all BiblioFetch users. Because Google enforces global request limits, it may occasionally hit the quota cap and become slow or temporarily blocked. Using your own key gives you an exclusive quota and full speed without interruptions.",
-        footer:     "BiblioFetch &copy; 2026. Built with academic rigour and privacy.",
+        footer:     'BiblioFetch &copy; 2026. Built with academic rigour and privacy. &nbsp;|&nbsp; <a href="https://github.com/meneguinha/BiblioFetch" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;"><i class="ph ph-github-logo"></i> meneguinha/BiblioFetch</a>',
     },
 
     pt: {
@@ -137,7 +137,7 @@ const TRANSLATIONS = {
         faq2_a:     "Completamente. Sua chave é armazenada <strong>100% de forma segura e privada no armazenamento local do seu próprio navegador (localStorage)</strong>. Ela nunca é salva em nosso servidor e é transmitida de forma criptografada apenas quando você solicita uma extração de referências.",
         faq3_q:     '<i class="ph ph-arrows-left-right"></i> Qual é a diferença entre a chave do servidor e a minha própria chave?',
         faq3_a:     "A chave do servidor é compartilhada entre todos os usuários do BiblioFetch. Como o Google impõe limites globais de requisições, ela pode eventualmente atingir o limite da cota e ficar lenta ou temporariamente bloqueada. Usar sua própria chave dá a você uma cota exclusiva e velocidade total sem interrupções.",
-        footer:     "BiblioFetch &copy; 2026. Construído com rigor acadêmico e privacidade.",
+        footer:     'BiblioFetch &copy; 2026. Construído com rigor acadêmico e privacidade. &nbsp;|&nbsp; <a href="https://github.com/meneguinha/BiblioFetch" target="_blank" rel="noopener noreferrer" style="color:inherit;text-decoration:underline;"><i class="ph ph-github-logo"></i> meneguinha/BiblioFetch</a>',
     }
 };
 
