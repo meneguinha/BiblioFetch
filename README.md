@@ -72,7 +72,17 @@ uvicorn app:app --reload
 
 ### Frontend
 
-Open `index.html` with the **Live Server** extension in VS Code (or any local HTTP server). The default `API_BASE_URL` in `script.js` points to `localhost:8000`.
+> [!IMPORTANT]
+> The `script.js` file points to the production HF Space by default. Before testing locally, change **line 2** to point to `localhost`:
+> ```js
+> // Change this:
+> const API_BASE_URL = 'https://fmenegottobr-bibliofetch.hf.space/api';
+> // To this:
+> const API_BASE_URL = 'http://localhost:8000/api';
+> ```
+> Remember to revert this before pushing back to GitHub.
+
+Open `index.html` with the **Live Server** extension in VS Code (or any local HTTP server).
 
 ---
 
