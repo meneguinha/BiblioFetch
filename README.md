@@ -83,23 +83,6 @@ uvicorn app:app --reload
 
 Open `index.html` with the **Live Server** extension in VS Code (or any local HTTP server).
 
----
-
-## Deployment
-
-| Layer    | Platform              | Notes                                              |
-|----------|-----------------------|----------------------------------------------------|
-| Frontend | GitHub Pages          | Served from the `main` branch root                 |
-| Backend  | Hugging Face Spaces   | Docker SDK — see `Dockerfile`                      |
-| API Key  | HF Space Secrets      | Set `GEMINI_API_KEY` in Space Settings → Secrets   |
-
-> Before pushing to GitHub, update `API_BASE_URL` in `script.js`:
-> ```js
-> const API_BASE_URL = 'https://fmenegottobr-bibliofetch.hf.space/api';
-> ```
-
----
-
 ## Tech Stack
 
 | Component | Technology |
