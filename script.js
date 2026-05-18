@@ -318,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
             noDoiList.innerHTML += `
                 <div class="list-item">
                     <div class="list-item-title">${item.title}</div>
-                    <div class="list-item-meta">Journal: ${item.journal || 'Not provided'}</div>
+                    <div class="list-item-meta">${t('source')}: ${item.journal || t('not_provided')}</div>
                     <a href="${searchUrl}" target="_blank" class="action-link" style="margin-top: 8px;">
                         <i class="ph ph-google-logo"></i> ${t('search_google')}
                     </a>

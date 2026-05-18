@@ -42,6 +42,8 @@ const TRANSLATIONS = {
         open_pdf:         "Open PDF",
         try_manually:     "Try manually",
         search_google:    "Search on Google",
+        source:           "Source",
+        not_provided:     "Not provided",
 
         // tutorial.html — static
         back_link:          "Back to BiblioFetch",
@@ -112,6 +114,8 @@ const TRANSLATIONS = {
         open_pdf:         "Abrir PDF",
         try_manually:     "Tentar manualmente",
         search_google:    "Buscar no Google",
+        source:           "Fonte",
+        not_provided:     "Não informada",
 
         // tutorial.html — static
         back_link:          "Voltar ao BiblioFetch",
