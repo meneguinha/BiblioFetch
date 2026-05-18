@@ -172,14 +172,53 @@ def enrich_references(req: EnrichRequest):
                             # 1. Attach DOI if missing
                             if not current_doi or str(current_doi).lower() in ["null", "none", ""]:
                                 ref['doi'] = work.get('doi')
+                            
+                            # Update current_doi if we found one
+                            current_doi = ref.get('doi')
 
                             # 2. Find Open Access link (PDF)
                             oa = work.get('open_access', {})
-                            oa_url = oa.get('oa_url')
-                            if oa_url:
-                                ref['pdf_url'] = oa_url
+                            if oa:
+                                oa_url = oa.get('oa_url')
+                                if oa_url:
+                                    ref['pdf_url'] = oa_url
             except Exception:
                 pass  # On individual network failure, continue to next item
+            
+            # Fallback to Semantic Scholar if OpenAlex didn't find the missing DOI or PDF
+            needs_doi = not current_doi or str(current_doi).lower() in ["null", "none", ""]
+            needs_pdf = not ref.get('pdf_url')
+            
+            if needs_doi or needs_pdf:
+                ss_url = f"https://api.semanticscholar.org/graph/v1/paper/search?query={query}&limit=1&fields=title,externalIds,openAccessPdf"
+                try:
+                    time.sleep(0.5)  # Semantic Scholar rate-limit politeness
+                    ss_response = requests.get(ss_url, headers=headers, timeout=10)
+                    if ss_response.status_code == 200:
+                        ss_data = ss_response.json()
+                        ss_results = ss_data.get('data', [])
+                        if ss_results:
+                            paper = ss_results[0]
+                            returned_title = paper.get('title', '').lower().strip()
+                            t1 = title.lower().strip()
+                            similarity = difflib.SequenceMatcher(None, t1, returned_title).ratio()
+                            
+                            if similarity >= 0.85:
+                                # 1. Attach DOI if missing
+                                if needs_doi:
+                                    external_ids = paper.get('externalIds', {})
+                                    if external_ids and 'DOI' in external_ids:
+                                        ref['doi'] = f"https://doi.org/{external_ids['DOI']}"
+                                
+                                # 2. Find Open Access link (PDF)
+                                if needs_pdf:
+                                    oa_pdf = paper.get('openAccessPdf')
+                                    if oa_pdf and isinstance(oa_pdf, dict):
+                                        oa_url = oa_pdf.get('url')
+                                        if oa_url:
+                                            ref['pdf_url'] = oa_url
+                except Exception:
+                    pass
 
         result_list.append(ref)
 

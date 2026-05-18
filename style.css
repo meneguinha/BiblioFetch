@@ -605,6 +605,7 @@ textarea:focus {
     justify-content: space-between;
     min-height: 140px;
     transition: all 0.2s ease-in-out;
+    cursor: pointer;
 }
 
 .list-item:hover {
@@ -613,9 +614,16 @@ textarea:focus {
     border-color: rgba(28, 23, 20, 0.15);
 }
 
-.list-item.clicked {
-    border-color: #1A532C !important; /* Visited dark academic green border */
-    box-shadow: 0 0 0 3px rgba(26, 83, 44, 0.12) !important;
+.list-item.state-green {
+    background-color: var(--success-bg) !important;
+    border-color: var(--success-color) !important;
+    box-shadow: 0 0 0 2px rgba(26, 83, 44, 0.15) !important;
+}
+
+.list-item.state-red {
+    background-color: #FEE2E2 !important;
+    border-color: #DC2626 !important;
+    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.15) !important;
 }
 
 .list-item-title {

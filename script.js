@@ -328,15 +328,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (data.no_doi.length === 0) noDoiList.innerHTML = `<div class="list-item">${t('all_had_doi')}</div>`;
     }
 
-    // Intercept link clicks to keep focus on the current tab
-    const handleLinkClick = (e) => {
-        const link = e.target.closest('a.action-link');
-        if (link) {
-            const item = link.closest('.list-item');
-            if (item) item.classList.add('clicked');
+    // Intercept card clicks to toggle states and handle link opens
+    const handleCardClick = (e) => {
+        const item = e.target.closest('.list-item');
+        if (!item) return;
 
-            // Standard left-click: controlled open to retain focus.
-            // Ctrl+click / Cmd+click / middle-click: let the browser open natively in background.
+        const link = e.target.closest('a.action-link');
+
+        // If a link was clicked, mark the item as read (green) and open the link
+        if (link) {
+            if (!item.classList.contains('state-green') && !item.classList.contains('state-red')) {
+                item.classList.add('state-green');
+            }
+
             if (e.type === 'click' && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
                 e.preventDefault();
                 const url = link.href;
@@ -346,9 +350,22 @@ document.addEventListener('DOMContentLoaded', () => {
                     setTimeout(() => window.focus(), 10);
                 }
             }
+            return; // Don't toggle state below if they specifically clicked a link
+        }
+
+        // Only toggle on regular left-click
+        if (e.type === 'click' && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
+            if (item.classList.contains('state-green')) {
+                item.classList.remove('state-green');
+                item.classList.add('state-red');
+            } else if (item.classList.contains('state-red')) {
+                item.classList.remove('state-red');
+            } else {
+                item.classList.add('state-green');
+            }
         }
     };
 
-    document.addEventListener('click', handleLinkClick);
-    document.addEventListener('auxclick', handleLinkClick);
+    document.addEventListener('click', handleCardClick);
+    document.addEventListener('auxclick', handleCardClick);
 });
