@@ -42,8 +42,24 @@
             <label for="userText" data-i18n="label_paste">Paste your raw bibliographic references below:</label>
             <textarea id="userText" data-i18n-placeholder="textarea_placeholder" placeholder="Ex: Arthurs, J., Drakopoulou, S., &amp; Gandini, A. (2018). Researching YouTube. Convergence..."></textarea>
 
+            <div class="provider-config-group" style="margin-bottom: 15px;">
+                <label data-i18n-html="provider_label"><i class="ph ph-hard-drives"></i> AI Provider:</label>
+                <div class="api-key-options">
+                    <label class="radio-option">
+                        <input type="radio" name="provider_type" value="google" checked>
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">Google AI Studio</span>
+                    </label>
+                    <label class="radio-option">
+                        <input type="radio" name="provider_type" value="nvidia">
+                        <span class="radio-custom"></span>
+                        <span class="radio-label">NVIDIA NIM</span>
+                    </label>
+                </div>
+            </div>
+
             <div class="api-key-config-group">
-                <label data-i18n-html="api_key_label"><i class="ph ph-key"></i> API Key Configuration (Gemini):</label>
+                <label id="apiKeyGroupLabel"><i class="ph ph-key"></i> <span data-i18n="api_key_label">API Key Configuration (Gemini)</span>:</label>
                 <div class="api-key-options">
                     <label class="radio-option">
                         <input type="radio" name="api_key_type" value="default" checked>
@@ -64,7 +80,7 @@
                     </div>
                     <p class="api-key-help-text">
                         <span data-i18n="api_key_help">Your key is saved locally and securely in your browser. It is never stored on our servers.</span>
-                        <a href="tutorial.html" target="_blank" class="help-link" data-i18n-html="tutorial_link">
+                        <a href="tutorial-google.html" target="_blank" class="help-link" data-i18n-html="tutorial_link" id="tutorialLink">
                             <i class="ph ph-book-open"></i> How to create my free API Key? (Step-by-step Tutorial)
                         </a>
                     </p>

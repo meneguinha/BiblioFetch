@@ -9,10 +9,13 @@ const TRANSLATIONS = {
         subtitle:     "Intelligent extraction and enrichment of bibliographic data.",
         label_paste:  "Paste your raw bibliographic references below:",
         textarea_placeholder: "Ex: Arthurs, J., Drakopoulou, S., & Gandini, A. (2018). Researching YouTube. Convergence...",
-        api_key_label:  '<i class="ph ph-key"></i> API Key Configuration (Gemini):',
+        api_key_label_google:  "API Key Configuration (Gemini):",
+        api_key_label_nvidia:  "API Key Configuration (NVIDIA):",
         radio_server:   "Use server key (Free & Default)",
-        radio_custom:   "Use my own key (Free on Google AI Studio)",
-        api_key_placeholder: "Paste your Google AI Studio API Key here...",
+        radio_custom_google:   "Use my own key (Free on Google AI Studio)",
+        radio_custom_nvidia:   "Use my own key (Free on build.nvidia.com)",
+        api_key_placeholder_google: "Paste your Google AI Studio API Key here...",
+        api_key_placeholder_nvidia: "Paste your NVIDIA NIM API Key here...",
         api_key_help:   "Your key is saved locally and securely in your browser. It is never stored on our servers.",
         tutorial_link:  '<i class="ph ph-book-open"></i> How to create my free API Key? (Step-by-step Tutorial)',
         model_label:    '<i class="ph ph-cpu"></i> Choose the AI model:',
@@ -32,7 +35,8 @@ const TRANSLATIONS = {
         // index.html — JS dynamic
         alert_empty:      "Please paste your references into the text field.",
         alert_line_limit: (n) => `Your text has ${n} lines. The maximum allowed is 200 lines.\n\nTip: paste only the references section of your document.`,
-        alert_no_key:     'Please enter your Gemini API key or select "Use server key".',
+        alert_no_key_google:  'Please enter your Gemini API key or select "Use server key".',
+        alert_no_key_nvidia:  'Please enter your NVIDIA API key or select "Use server key".',
         alert_error:      (msg) => `An error occurred: ${msg}`,
         btn_processing:   "Processing...",
         btn_process_restore: "Process References",
@@ -62,6 +66,29 @@ const TRANSLATIONS = {
         step3_tut_copy:     'Click <strong>Copy</strong> to copy it.',
         step4_tut_title:    "Paste it into BiblioFetch",
         step4_tut_desc:     'Return to the BiblioFetch page, select <strong>"Use my own key"</strong>, paste the copied code into the text field, and click <strong>Process References</strong>.',
+        
+        // tutorial-nvidia.html — static
+        page_title_tutorial_nv: "How to Create a Free NVIDIA API Key | BiblioFetch",
+        tutorial_nv_h1: "Getting your NVIDIA NIM API Key",
+        tutorial_nv_subtitle: "Follow the step-by-step tutorial below to create your personal API key in under 2 minutes.",
+        step1_nv_title: "Go to build.nvidia.com",
+        step1_nv_desc: "NVIDIA API Catalog is the official platform to access NVIDIA NIM models. Sign in or create a developer account.",
+        step1_nv_btn: 'Open NVIDIA API Catalog <i class="ph ph-arrow-square-out"></i>',
+        step2_nv_title: "Select a Model & Get API Key",
+        step2_nv_desc: 'Choose any model (e.g., Llama 3) and click on <strong>"Get API Key"</strong> in the top right corner.',
+        step3_nv_title: "Generate and copy your API key",
+        step3_nv_desc: 'Click <strong>"Generate Key"</strong>, and a key (a long code starting with <code>nvapi-</code>) will be created.',
+        step3_nv_warning: '<strong>⚠️ Note:</strong> You are given an initial pool of free credits to test the models.',
+        step3_nv_copy: 'Click <strong>Copy</strong> to copy it.',
+        step4_nv_title: "Paste it into BiblioFetch",
+        step4_nv_desc: 'Return to the BiblioFetch page, select <strong>"NVIDIA NIM"</strong>, paste the copied code into the text field, and click <strong>Process References</strong>.',
+        faq1_nv_q: '<i class="ph ph-question-circle"></i> Is the NVIDIA API key really free?',
+        faq1_nv_a: "Yes! NVIDIA gives you a generous amount of free credits (usually 1,000 to 5,000) for prototyping and development.",
+        faq2_nv_q: '<i class="ph ph-shield-check"></i> Is it safe to enter my API key here?',
+        faq2_nv_a: "Completely. Your key is stored <strong>100% securely and privately in your own browser's local storage (localStorage)</strong>. It is never saved on our server and is transmitted directly and in encrypted form only when you request a reference extraction.",
+        faq3_nv_q: '<i class="ph ph-arrows-left-right"></i> What is the difference between the server key and my own key?',
+        faq3_nv_a: "The server key is shared among all BiblioFetch users. Using your own key gives you an exclusive quota and full speed without interruptions.",
+
         faq_title:  '<i class="ph ph-chats" style="color:var(--gold-color);"></i> Frequently Asked Questions (FAQ)',
         faq1_q:     '<i class="ph ph-question-circle"></i> Is the Gemini API key really free?',
         faq1_a:     "Yes! Google offers an extremely generous Free Tier for Google AI Studio. You do not need to add a credit card and can make up to 15 requests per minute for free — more than enough for BiblioFetch usage.",
@@ -81,10 +108,13 @@ const TRANSLATIONS = {
         subtitle:     "Extração e enriquecimento inteligente de dados bibliográficos.",
         label_paste:  "Cole suas referências bibliográficas brutas abaixo:",
         textarea_placeholder: "Ex: Arthurs, J., Drakopoulou, S., & Gandini, A. (2018). Researching YouTube. Convergence...",
-        api_key_label:  '<i class="ph ph-key"></i> Configuração da API Key (Gemini):',
+        api_key_label_google:  "Configuração da API Key (Gemini):",
+        api_key_label_nvidia:  "Configuração da API Key (NVIDIA):",
         radio_server:   "Usar chave do servidor (Grátis e Padrão)",
-        radio_custom:   "Usar minha própria chave (Grátis no Google AI Studio)",
-        api_key_placeholder: "Cole sua API Key do Google AI Studio aqui...",
+        radio_custom_google:   "Usar minha própria chave (Grátis no Google AI Studio)",
+        radio_custom_nvidia:   "Usar minha própria chave (Grátis em build.nvidia.com)",
+        api_key_placeholder_google: "Cole sua API Key do Google AI Studio aqui...",
+        api_key_placeholder_nvidia: "Cole sua API Key da NVIDIA NIM aqui...",
         api_key_help:   "Sua chave é salva de forma local e segura no seu navegador. Ela nunca é armazenada em nossos servidores.",
         tutorial_link:  '<i class="ph ph-book-open"></i> Como criar minha API Key gratuita? (Tutorial passo a passo)',
         model_label:    '<i class="ph ph-cpu"></i> Escolha o modelo de IA:',
@@ -104,7 +134,8 @@ const TRANSLATIONS = {
         // index.html — JS dynamic
         alert_empty:      "Por favor, cole suas referências no campo de texto.",
         alert_line_limit: (n) => `Seu texto tem ${n} linhas. O máximo permitido é 200 linhas.\n\nDica: cole apenas a seção de referências do seu documento.`,
-        alert_no_key:     'Por favor, insira sua API Key do Gemini ou selecione "Usar chave do servidor".',
+        alert_no_key_google:  'Por favor, insira sua API Key do Gemini ou selecione "Usar chave do servidor".',
+        alert_no_key_nvidia:  'Por favor, insira sua API Key da NVIDIA ou selecione "Usar chave do servidor".',
         alert_error:      (msg) => `Ocorreu um erro: ${msg}`,
         btn_processing:   "Processando...",
         btn_process_restore: "Processar Referências",
@@ -134,6 +165,29 @@ const TRANSLATIONS = {
         step3_tut_copy:     'Clique em <strong>Copiar</strong> para copiá-la.',
         step4_tut_title:    "Cole no BiblioFetch",
         step4_tut_desc:     'Volte à página do BiblioFetch, selecione <strong>"Usar minha própria chave"</strong>, cole o código copiado no campo de texto e clique em <strong>Processar Referências</strong>.',
+
+        // tutorial-nvidia.html — static
+        page_title_tutorial_nv: "Como Criar uma API Key Gratuita da NVIDIA | BiblioFetch",
+        tutorial_nv_h1: "Obtendo sua API Key da NVIDIA NIM",
+        tutorial_nv_subtitle: "Siga o tutorial passo a passo abaixo para criar sua chave pessoal em menos de 2 minutos.",
+        step1_nv_title: "Acesse o build.nvidia.com",
+        step1_nv_desc: "O NVIDIA API Catalog é a plataforma oficial para acessar os modelos NVIDIA NIM. Faça login ou crie uma conta de desenvolvedor.",
+        step1_nv_btn: 'Abrir o NVIDIA API Catalog <i class="ph ph-arrow-square-out"></i>',
+        step2_nv_title: "Selecione um Modelo e Pegue a Chave",
+        step2_nv_desc: 'Escolha qualquer modelo (ex: Llama 3) e clique em <strong>"Get API Key"</strong> no canto superior direito.',
+        step3_nv_title: "Gere e copie sua API Key",
+        step3_nv_desc: 'Clique em <strong>"Generate Key"</strong>, e uma chave (um código longo começando com <code>nvapi-</code>) será criada.',
+        step3_nv_warning: '<strong>⚠️ Atenção:</strong> Você receberá uma cota inicial de créditos gratuitos para testar os modelos.',
+        step3_nv_copy: 'Clique em <strong>Copiar</strong> para copiá-la.',
+        step4_nv_title: "Cole no BiblioFetch",
+        step4_nv_desc: 'Volte à página do BiblioFetch, selecione <strong>"NVIDIA NIM"</strong>, cole o código copiado no campo de texto e clique em <strong>Processar Referências</strong>.',
+        faq1_nv_q: '<i class="ph ph-question-circle"></i> A API Key da NVIDIA é realmente gratuita?',
+        faq1_nv_a: "Sim! A NVIDIA oferece uma quantidade generosa de créditos gratuitos (geralmente entre 1.000 e 5.000) para prototipagem e desenvolvimento.",
+        faq2_nv_q: '<i class="ph ph-shield-check"></i> É seguro inserir minha API Key aqui?',
+        faq2_nv_a: "Completamente. Sua chave é armazenada <strong>100% de forma segura e privada no armazenamento local do seu próprio navegador (localStorage)</strong>. Ela nunca é salva em nosso servidor e é transmitida de forma criptografada apenas quando você solicita uma extração de referências.",
+        faq3_nv_q: '<i class="ph ph-arrows-left-right"></i> Qual é a diferença entre a chave do servidor e a minha própria chave?',
+        faq3_nv_a: "A chave do servidor é compartilhada entre todos os usuários do BiblioFetch. Usar sua própria chave dá a você uma cota exclusiva e velocidade total sem interrupções.",
+
         faq_title:  '<i class="ph ph-chats" style="color:var(--gold-color);"></i> Perguntas Frequentes (FAQ)',
         faq1_q:     '<i class="ph ph-question-circle"></i> A API Key do Gemini é realmente gratuita?',
         faq1_a:     "Sim! O Google oferece um Free Tier extremamente generoso para o Google AI Studio. Você não precisa adicionar cartão de crédito e pode fazer até 15 requisições por minuto gratuitamente — mais do que suficiente para o uso do BiblioFetch.",
@@ -173,7 +227,14 @@ function applyLanguage(lang) {
 
     // Resolve page title key
     const isIndex = document.querySelector('#btnProcess') !== null;
-    const titleKey = isIndex ? 'page_title_index' : 'page_title_tutorial';
+    let titleKey = 'page_title_index';
+    if (!isIndex) {
+        if (document.querySelector('[data-i18n="tutorial_nv_h1"]')) {
+            titleKey = 'page_title_tutorial_nv';
+        } else {
+            titleKey = 'page_title_tutorial';
+        }
+    }
     document.title = t(titleKey);
 
     // Plain text

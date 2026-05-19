@@ -11,6 +11,7 @@ import difflib
 import time
 from curl_cffi import requests as requests_cffi
 from typing import List, Optional
+from openai import OpenAI
 
 app = FastAPI(title="BiblioFetch API")
 
@@ -32,6 +33,7 @@ class ExtractRequest(BaseModel):
     text: str
     model: Optional[str] = None
     api_key: Optional[str] = None
+    provider: Optional[str] = "google"
 
 class ReferenceItem(BaseModel):
     title: Optional[str] = None
@@ -58,44 +60,13 @@ def extract_references(req: ExtractRequest):
             detail=f"Input too long: {line_count} lines. Maximum allowed is 200 lines."
         )
 
-    gemini_key = req.api_key or os.environ.get("GEMINI_API_KEY")
-    if not gemini_key:
-        raise HTTPException(
-            status_code=400,
-            detail="Gemini API key not found. Set the GEMINI_API_KEY environment variable on the server or provide your own key in the panel."
-        )
-
     try:
-        genai.configure(api_key=gemini_key)
-
-        # Mapping of user-friendly model names to Google API identifiers
-        model_mapping = {
-            "Gemini 2.5 Flash": "models/gemini-2.5-flash",
-            "Gemini 2.5 Flash Lite": "models/gemini-2.5-flash-lite",
-            "Gemini 3 Flash": "models/gemini-3-flash-preview",
-            "Gemini 3.1 Flash Lite": "models/gemini-3.1-flash-lite-preview",
-            "Gemma 4 26B": "models/gemma-4-26b-a4b-it",
-            "Gemma 4 31B": "models/gemma-4-31b-it"
-        }
-
-        chosen_model = "models/gemma-4-26b-a4b-it"
-        if req.model:
-            if req.model in model_mapping:
-                chosen_model = model_mapping[req.model]
-            elif req.model.startswith("models/"):
-                chosen_model = req.model
-
-        ai_model = genai.GenerativeModel(
-            model_name=chosen_model,
-            generation_config={"temperature": 0.1}
-        )
-
         # Pre-processing: Clean broken line breaks from PDFs
         # 1. Rejoin words hyphenated at end of line
         clean_text = re.sub(r'-\s*\n\s*', '', req.text)
         # 2. Replace single newlines with a space (preserves double-newline paragraphs)
         clean_text = re.sub(r'(?<!\n)\n(?!\n)', ' ', clean_text)
-
+        
         prompt = f"""
         Extract bibliographic data from the provided text and return a valid JSON array.
         Note: The source text was copied from a PDF and may contain minor line breaks or stray hyphens. Ignore these formatting issues and reconstruct names and titles correctly where needed.
@@ -111,8 +82,63 @@ def extract_references(req: ExtractRequest):
         {clean_text}
         """
 
-        response = ai_model.generate_content(prompt)
-        raw_text = response.text
+        if req.provider == "nvidia":
+            nvidia_key = req.api_key or os.environ.get("NVIDIA_API_KEY")
+            if not nvidia_key:
+                raise HTTPException(
+                    status_code=400,
+                    detail="NVIDIA API key not found. Set the NVIDIA_API_KEY environment variable on the server or provide your own key in the panel."
+                )
+            
+            client = OpenAI(
+                base_url="https://integrate.api.nvidia.com/v1",
+                api_key=nvidia_key
+            )
+            
+            chosen_model = req.model or "meta/llama3-70b-instruct"
+            
+            completion = client.chat.completions.create(
+                model=chosen_model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.1,
+                max_tokens=2048
+            )
+            raw_text = completion.choices[0].message.content
+
+        else:
+            gemini_key = req.api_key or os.environ.get("GEMINI_API_KEY")
+            if not gemini_key:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Gemini API key not found. Set the GEMINI_API_KEY environment variable on the server or provide your own key in the panel."
+                )
+
+            genai.configure(api_key=gemini_key)
+
+            # Mapping of user-friendly model names to Google API identifiers
+            model_mapping = {
+                "Gemini 2.5 Flash": "models/gemini-2.5-flash",
+                "Gemini 2.5 Flash Lite": "models/gemini-2.5-flash-lite",
+                "Gemini 3 Flash": "models/gemini-3-flash-preview",
+                "Gemini 3.1 Flash Lite": "models/gemini-3.1-flash-lite-preview",
+                "Gemma 4 26B": "models/gemma-4-26b-a4b-it",
+                "Gemma 4 31B": "models/gemma-4-31b-it"
+            }
+
+            chosen_model = "models/gemma-4-26b-a4b-it"
+            if req.model:
+                if req.model in model_mapping:
+                    chosen_model = model_mapping[req.model]
+                elif req.model.startswith("models/"):
+                    chosen_model = req.model
+
+            ai_model = genai.GenerativeModel(
+                model_name=chosen_model,
+                generation_config={"temperature": 0.1}
+            )
+
+            response = ai_model.generate_content(prompt)
+            raw_text = response.text
 
         # Smart extraction of JSON block
         match = re.search(r'```json\s*(.*?)\s*```', raw_text, re.DOTALL | re.IGNORECASE)

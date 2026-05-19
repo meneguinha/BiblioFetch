@@ -9,9 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // API Key elements
     const radioKeys = document.getElementsByName('api_key_type');
+    const radioProviders = document.getElementsByName('provider_type');
     const customApiKeyContainer = document.getElementById('customApiKeyContainer');
     const customApiKeyInput = document.getElementById('customApiKey');
     const togglePassword = document.getElementById('togglePassword');
+    const apiKeyGroupLabel = document.getElementById('apiKeyGroupLabel');
 
     const progressSection = document.getElementById('progressSection');
     const resultsSection = document.getElementById('resultsSection');
@@ -37,23 +39,88 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Load saved key from LocalStorage
-    const savedApiKey = localStorage.getItem('bibliofetch_api_key');
-    if (savedApiKey && customApiKeyInput && customApiKeyContainer) {
-        customApiKeyInput.value = savedApiKey;
-        const customRadio = Array.from(radioKeys).find(r => r.value === 'custom');
-        if (customRadio) {
-            customRadio.checked = true;
-            customApiKeyContainer.classList.remove('hidden');
+    // Models
+    const googleModels = `
+        <option value="Gemini 2.5 Flash">Gemini 2.5 Flash</option>
+        <option value="Gemini 2.5 Flash Lite">Gemini 2.5 Flash Lite</option>
+        <option value="Gemini 3 Flash">Gemini 3 Flash</option>
+        <option value="Gemini 3.1 Flash Lite">Gemini 3.1 Flash Lite</option>
+        <option value="Gemma 4 26B" selected>Gemma 4 26B</option>
+        <option value="Gemma 4 31B">Gemma 4 31B</option>
+    `;
+    const nvidiaModels = `
+        <option value="meta/llama3-70b-instruct" selected>Llama 3 70B Instruct</option>
+        <option value="nvidia/nemotron-4-340b-instruct">Nemotron 4 340B</option>
+        <option value="mistralai/mixtral-8x22b-instruct-v0.1">Mixtral 8x22B</option>
+    `;
+
+    function updateProviderUI() {
+        const provider = Array.from(radioProviders).find(r => r.checked)?.value || 'google';
+        if (provider === 'nvidia') {
+            modelSelection.innerHTML = nvidiaModels;
+            if (apiKeyGroupLabel) apiKeyGroupLabel.innerHTML = `<i class="ph ph-key"></i> <span data-i18n="api_key_label_nvidia">${t('api_key_label_nvidia')}</span>:`;
+            
+            const customRadioLabel = document.querySelector('[data-i18n="radio_custom"]') || document.querySelector('[data-i18n="radio_custom_google"]');
+            if (customRadioLabel) {
+                customRadioLabel.dataset.i18n = 'radio_custom_nvidia';
+                customRadioLabel.textContent = t('radio_custom_nvidia');
+            }
+            
+            customApiKeyInput.dataset.i18nPlaceholder = 'api_key_placeholder_nvidia';
+            customApiKeyInput.placeholder = t('api_key_placeholder_nvidia');
+            
+            const tutorialLink = document.getElementById('tutorialLink');
+            if (tutorialLink) tutorialLink.href = 'tutorial-nvidia.html';
+        } else {
+            modelSelection.innerHTML = googleModels;
+            if (apiKeyGroupLabel) apiKeyGroupLabel.innerHTML = `<i class="ph ph-key"></i> <span data-i18n="api_key_label_google">${t('api_key_label_google')}</span>:`;
+            
+            const customRadioLabel = document.querySelector('[data-i18n="radio_custom"]') || document.querySelector('[data-i18n="radio_custom_nvidia"]');
+            if (customRadioLabel) {
+                customRadioLabel.dataset.i18n = 'radio_custom_google';
+                customRadioLabel.textContent = t('radio_custom_google');
+            }
+            
+            customApiKeyInput.dataset.i18nPlaceholder = 'api_key_placeholder_google';
+            customApiKeyInput.placeholder = t('api_key_placeholder_google');
+            
+            const tutorialLink = document.getElementById('tutorialLink');
+            if (tutorialLink) tutorialLink.href = 'tutorial-google.html';
+        }
+        
+        // Load saved key from LocalStorage
+        const savedApiKey = localStorage.getItem(`bibliofetch_api_key_${provider}`) || (provider === 'google' ? localStorage.getItem('bibliofetch_api_key') : null);
+        if (savedApiKey) {
+            customApiKeyInput.value = savedApiKey;
+            const customRadio = Array.from(radioKeys).find(r => r.value === 'custom');
+            if (customRadio) {
+                customRadio.checked = true;
+                customApiKeyContainer.classList.remove('hidden');
+            }
+        } else {
+            customApiKeyInput.value = '';
+            const defaultRadio = Array.from(radioKeys).find(r => r.value === 'default');
+            if (defaultRadio) {
+                defaultRadio.checked = true;
+                customApiKeyContainer.classList.add('hidden');
+            }
         }
     }
+
+    radioProviders.forEach(radio => {
+        radio.addEventListener('change', updateProviderUI);
+    });
 
     // Save key locally as the user types
     if (customApiKeyInput) {
         customApiKeyInput.addEventListener('input', (e) => {
-            localStorage.setItem('bibliofetch_api_key', e.target.value.trim());
+            const provider = Array.from(radioProviders).find(r => r.checked)?.value || 'google';
+            localStorage.setItem(`bibliofetch_api_key_${provider}`, e.target.value.trim());
         });
     }
+
+    // Initialize UI on load
+    updateProviderUI();
 
     btnProcess.addEventListener('click', async () => {
         const text = userText.value.trim();
@@ -71,11 +138,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Determine which API key to send
         let apiKeyToSend = null;
+        const selectedProvider = Array.from(radioProviders).find(r => r.checked)?.value || 'google';
         const selectedRadio = Array.from(radioKeys).find(r => r.checked);
         if (selectedRadio && selectedRadio.value === 'custom') {
             const userKey = customApiKeyInput.value.trim();
             if (!userKey) {
-                alert(t('alert_no_key'));
+                alert(selectedProvider === 'nvidia' ? t('alert_no_key_nvidia') : t('alert_no_key_google'));
                 return;
             }
             apiKeyToSend = userKey;
@@ -118,7 +186,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify({
                     text,
                     model: modelSelection ? modelSelection.value : null,
-                    api_key: apiKeyToSend
+                    api_key: apiKeyToSend,
+                    provider: selectedProvider
                 })
             });
             if (!resExtract.ok) throw new Error(`Extraction error: ${await resExtract.text()}`);
