@@ -51,7 +51,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const nvidiaModels = `
         <option value="meta/llama-3.1-70b-instruct" selected>Llama 3.1 70B Instruct</option>
         <option value="meta/llama-3.1-8b-instruct">Llama 3.1 8B Instruct</option>
+        <option value="meta/llama-3.2-3b-instruct">Llama 3.2 3B Instruct</option>
         <option value="mistralai/mixtral-8x22b-instruct-v0.1">Mixtral 8x22B</option>
+        <option value="microsoft/phi-4-mini-instruct">Phi-4 Mini Instruct</option>
+        <option value="deepseek-ai/deepseek-v4-flash">DeepSeek V4 Flash</option>
     `;
 
     function updateProviderUI() {
