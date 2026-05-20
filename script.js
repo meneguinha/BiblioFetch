@@ -49,8 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
         <option value="Gemma 4 31B">Gemma 4 31B</option>
     `;
     const nvidiaModels = `
-        <option value="meta/llama3-70b-instruct" selected>Llama 3 70B Instruct</option>
-        <option value="nvidia/nemotron-4-340b-instruct">Nemotron 4 340B</option>
+        <option value="meta/llama-3.1-70b-instruct" selected>Llama 3.1 70B Instruct</option>
+        <option value="nvidia/llama-3.1-nemotron-70b-instruct">Nemotron Llama 3.1 70B</option>
         <option value="mistralai/mixtral-8x22b-instruct-v0.1">Mixtral 8x22B</option>
     `;
 
