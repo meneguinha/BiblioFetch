@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     const nvidiaModels = `
         <option value="meta/llama-3.1-70b-instruct" selected>Llama 3.1 70B Instruct</option>
-        <option value="nvidia/llama-3.1-nemotron-70b-instruct">Nemotron Llama 3.1 70B</option>
+        <option value="meta/llama-3.1-8b-instruct">Llama 3.1 8B Instruct</option>
         <option value="mistralai/mixtral-8x22b-instruct-v0.1">Mixtral 8x22B</option>
     `;
 
